@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,8 +28,9 @@ namespace sindraw
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var dot = new DraggablePoint();
-            Canvas canvas = sender as Canvas;
+            var canvas = sender as Canvas;
+            Debug.WriteLine(canvas.Name);
+            var dot = new DraggablePoint(canvas, e.GetPosition(canvas));
 
             canvas.Children.Add(dot);
 

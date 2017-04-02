@@ -2,3 +2,5 @@
 *.tmp
 *.obj
 *.pub
+bin
+obj
