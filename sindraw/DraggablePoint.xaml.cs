@@ -83,6 +83,7 @@ namespace sindraw
         private double ymax = 1.1;
 
         Line linkedLine = null;
+        Point lastPoint;
 
         private void drawSin(Canvas canvas, Point pt)
         {
@@ -103,6 +104,8 @@ namespace sindraw
 
             canvas.Children.Add(linkedLine);
 
+            lastPoint = pt;
+
             /*var pl = new Polyline();
             pl.Stroke = Brushes.White;
 
@@ -115,6 +118,11 @@ namespace sindraw
             }
 
             canvas.Children.Add(pl);*/
+        }
+
+        public void redrawSin()
+        {
+            drawSin(parentCanvas, lastPoint);
         }
 
         private Point castPoint(Canvas canvas, Point pt)

@@ -25,17 +25,5 @@ namespace sindraw
         {
             InitializeComponent();
         }
-
-        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var canvas = sender as Canvas;
-            Debug.WriteLine(canvas.Name);
-            var dot = new DraggablePoint(canvas, e.GetPosition(canvas));
-
-            canvas.Children.Add(dot);
-
-            Canvas.SetLeft(dot, e.GetPosition(canvas).X - 5.0);
-            Canvas.SetTop(dot, e.GetPosition(canvas).Y - 5.0);
-        }
     }
 }
