@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="sindraw.DraggablePoint"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:sindraw"
+             xmlns:converters="clr-namespace:System.Windows.Controls;assembly=PresentationFramework" 
+             mc:Ignorable="d" 
+             d:DesignHeight="12" d:DesignWidth="12">
+
+    <Grid>
+        <Grid.Resources>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </Grid.Resources>
+
+        <Ellipse Width="12" Height="12" Fill="Transparent" Stroke="White"
+                 x:Name="AroundCircle"
+                 Visibility="{Binding IsMouseOver, ElementName=MainCircle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                 Panel.ZIndex="-1"/>
+
+        <Ellipse Width="10" Height="10" Fill="Red" x:Name="MainCircle" 
+                 MouseMove="Ellipse_MouseMove"
+                 MouseDown="MainCircle_MouseDown"
+                 MouseUp="MainCircle_MouseUp"
+                 Panel.ZIndex="1">
+        </Ellipse>
+        
+    </Grid>
+</UserControl>
