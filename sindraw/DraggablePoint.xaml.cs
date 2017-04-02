@@ -76,12 +76,6 @@ namespace sindraw
 {
     public partial class DraggablePoint : UserControl
     {
-        private double xmin = 0;
-
-        private double xmax = 6.5;
-        private double ymin = -1.1;
-        private double ymax = 1.1;
-
         Line linkedLine = null;
         Point lastPoint;
 
@@ -94,6 +88,11 @@ namespace sindraw
             var pt2 = new Point(canvas.ActualWidth, (k * canvas.ActualWidth + canvas.ActualHeight / 2));
 
             linkedLine = new Line();
+            linkedLine.StrokeThickness = 2;
+
+            linkedLine.StrokeDashCap = PenLineCap.Round;
+            linkedLine.StrokeStartLineCap = PenLineCap.Round;
+            linkedLine.StrokeEndLineCap = PenLineCap.Round;
 
             linkedLine.X1 = 0;
             linkedLine.Y1 = canvas.ActualHeight / 2;
@@ -105,33 +104,11 @@ namespace sindraw
             canvas.Children.Add(linkedLine);
 
             lastPoint = pt;
-
-            /*var pl = new Polyline();
-            pl.Stroke = Brushes.White;
-
-            for (int i = 0; i < 100; ++i)
-            {
-                double x = i / 5.0;
-                double y = Math.Sin(0.5 * x);
-
-                pl.Points.Add(castPoint(canvas, new Point(x, y)));
-            }
-
-            canvas.Children.Add(pl);*/
         }
 
         public void redrawSin()
         {
             drawSin(parentCanvas, lastPoint);
-        }
-
-        private Point castPoint(Canvas canvas, Point pt)
-        {
-            Point result = new Point();
-
-            result.X = (pt.X - xmin) * canvas.ActualWidth / (xmax - xmin);
-            result.Y = canvas.ActualHeight - (pt.Y - ymin) * canvas.ActualHeight / (ymax - ymin);
-            return result;
         }
     }
 }
