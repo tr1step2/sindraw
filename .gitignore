@@ -4,3 +4,4 @@
 *.pub
 bin
 obj
+.vs

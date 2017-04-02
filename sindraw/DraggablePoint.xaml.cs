@@ -66,7 +66,7 @@ namespace sindraw
                 this.RenderTransform = transform;
                 anchorPoint = currentPoint;
 
-                drawSin(parentCanvas, currentPoint);
+                drawSin(parentCanvas, new Point(currentPoint.X, currentPoint.Y));
             }
         }
     }
@@ -89,13 +89,17 @@ namespace sindraw
             if (linkedLine != null)
                 canvas.Children.Remove(linkedLine);
 
+            var k = (pt.Y - canvas.ActualHeight / 2) / pt.X;
+            var pt2 = new Point(canvas.ActualWidth, (k * canvas.ActualWidth + canvas.ActualHeight / 2));
+
             linkedLine = new Line();
-            linkedLine.Stroke = Brushes.White;
 
             linkedLine.X1 = 0;
             linkedLine.Y1 = canvas.ActualHeight / 2;
-            linkedLine.X2 = pt.X;
-            linkedLine.Y2 = pt.Y;
+            linkedLine.X2 = pt2.X;
+            linkedLine.Y2 = pt2.Y;
+
+            linkedLine.Stroke = Brushes.White;
 
             canvas.Children.Add(linkedLine);
 
