@@ -78,7 +78,7 @@ namespace sindraw
 {
     public partial class DraggablePoint : UserControl
     {
-        Line linkedLine = null;
+        Polyline linkedLine = null;
         Point lastPoint;
 
         private void drawSin(Canvas canvas, Point pt)
@@ -86,19 +86,31 @@ namespace sindraw
             if (linkedLine != null)
                 canvas.Children.Remove(linkedLine);
 
-            var k = (pt.Y - canvas.ActualHeight / 2) / pt.X;
-            var pt2 = new Point(canvas.ActualWidth, (k * canvas.ActualWidth + canvas.ActualHeight / 2));
+            Debug.WriteLine("{0} {1}", pt.X, pt.Y);
 
-            linkedLine = new Line();
-            linkedLine.StrokeThickness = 2;
-            linkedLine.StrokeStartLineCap = PenLineCap.Round;
-
-            linkedLine.X1 = 0;
-            linkedLine.Y1 = canvas.ActualHeight / 2;
-            linkedLine.X2 = pt2.X;
-            linkedLine.Y2 = pt2.Y;
-
+            linkedLine = new Polyline();
             linkedLine.Stroke = Brushes.White;
+
+            double xtrmX = canvas.ActualWidth * 0.2;
+            double xtrmY = canvas.ActualHeight * 0.166;
+
+            double a = xtrmY / pt.Y;
+            double k = xtrmX / pt.X;
+
+            double halfHeight = canvas.ActualHeight / 2;
+            double frameStep = canvas.ActualWidth / 80;
+            double frameX = 0;
+            double frameY = halfHeight;
+
+            for (int i = 0; i < 80; ++i, frameX += frameStep)
+            {
+                double x = (double)i / 10;
+                double y = a * Math.Sin(k * x);
+                
+                frameY = halfHeight - y * 100;
+
+                linkedLine.Points.Add(new Point(frameX, frameY));
+            }
 
             canvas.Children.Add(linkedLine);
 
