@@ -41,7 +41,7 @@ namespace sindraw
             element.CaptureMouse();
             isInDrag = true;
             e.Handled = true;
-        }
+    }
 
         private void MainCircle_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -67,6 +67,8 @@ namespace sindraw
                 anchorPoint = currentPoint;
 
                 drawSin(parentCanvas, new Point(currentPoint.X, currentPoint.Y));
+
+                Panel.SetZIndex((UIElement)this, 2);
             }
         }
     }
@@ -89,10 +91,7 @@ namespace sindraw
 
             linkedLine = new Line();
             linkedLine.StrokeThickness = 2;
-
-            linkedLine.StrokeDashCap = PenLineCap.Round;
             linkedLine.StrokeStartLineCap = PenLineCap.Round;
-            linkedLine.StrokeEndLineCap = PenLineCap.Round;
 
             linkedLine.X1 = 0;
             linkedLine.Y1 = canvas.ActualHeight / 2;
