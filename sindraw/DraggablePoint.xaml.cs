@@ -91,6 +91,7 @@ namespace sindraw
 
             linkedLine = SinDrawer.draw(canvas, a, k);
             linkedLine.Stroke = Brushes.White;
+            linkedLine.StrokeThickness = 2;
 
             canvas.Children.Add(linkedLine);
 

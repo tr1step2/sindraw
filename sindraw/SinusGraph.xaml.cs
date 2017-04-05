@@ -65,6 +65,7 @@ namespace sindraw
 
             sumPolyLine = new Polyline();
             sumPolyLine.Stroke = Brushes.Yellow;
+            sumPolyLine.StrokeThickness = 2;
 
             for (int i = 0; i < 280; ++i)
             {
