@@ -25,13 +25,16 @@ namespace sindraw
         private bool isInDrag = false;
 
         private Canvas parentCanvas;
+        private PointCollection mSumPoints;
 
-        public DraggablePoint(Canvas parent, Point pt)
+        public DraggablePoint(Canvas parent, PointCollection sumPoints, Point pt)
         {
             InitializeComponent();
-
+           
             parentCanvas = parent;
-            drawSin(parentCanvas, pt);
+            mSumPoints = sumPoints;
+
+            drawSin(parentCanvas, sumPoints, pt);
         }
 
         private void MainCircle_MouseDown(object sender, MouseButtonEventArgs e)
@@ -41,7 +44,7 @@ namespace sindraw
             element.CaptureMouse();
             isInDrag = true;
             e.Handled = true;
-    }
+        }
 
         private void MainCircle_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -66,7 +69,7 @@ namespace sindraw
                 this.RenderTransform = transform;
                 anchorPoint = currentPoint;
 
-                drawSin(parentCanvas, new Point(currentPoint.X, currentPoint.Y));
+                drawSin(parentCanvas, mSumPoints, new Point(currentPoint.X, currentPoint.Y));
 
                 Panel.SetZIndex((UIElement)this, 2);
             }
@@ -81,18 +84,13 @@ namespace sindraw
         Polyline linkedLine = null;
         Point lastPoint;
 
-        private void drawSin(Canvas canvas, Point pt)
+        private void drawSin(Canvas canvas, PointCollection sumPoints, Point pt)
         {
             if (linkedLine != null)
                 canvas.Children.Remove(linkedLine);
 
-            Debug.WriteLine("{0} {1}", pt.X, pt.Y);
-
-            linkedLine = new Polyline();
-            linkedLine.Stroke = Brushes.White;
-
             double halfHeight = canvas.ActualHeight / 2;
-            double frameStep = canvas.ActualWidth / 80;
+            double frameStep = canvas.ActualWidth / 280;
 
             double Xideal = Math.PI / 2 * 10 * frameStep;
             double Yideal = halfHeight - 100; 
@@ -100,18 +98,8 @@ namespace sindraw
             double a = (halfHeight - pt.Y) / 100;
             double k = Xideal / pt.X;
 
-            double frameX = 0;
-            double frameY = halfHeight;
-
-            for (int i = 0; i < 80; ++i, frameX += frameStep)
-            {
-                double x = (double)i / 10;
-                double y = a * Math.Sin(k * x);
-                
-                frameY = halfHeight - y * 100;
-
-                linkedLine.Points.Add(new Point(frameX, frameY));
-            }
+            linkedLine = SinDrawer.draw(canvas, sumPoints, a, k);
+            linkedLine.Stroke = Brushes.White;
 
             canvas.Children.Add(linkedLine);
 
@@ -120,7 +108,12 @@ namespace sindraw
 
         public void redrawSin()
         {
-            drawSin(parentCanvas, lastPoint);
+            drawSin(parentCanvas, mSumPoints, lastPoint);
+        }
+
+        public Point getPoint()
+        {
+            return lastPoint;
         }
     }
 }

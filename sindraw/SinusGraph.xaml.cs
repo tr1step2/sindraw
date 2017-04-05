@@ -22,6 +22,9 @@ namespace sindraw
     public partial class SinusGraph : UserControl
     {
         List<DraggablePoint> points = new List<DraggablePoint>();
+        PointCollection mSumPointCollection = new PointCollection(280);
+        Polyline sumPolyLine;
+        Canvas mCanvas;
 
         public SinusGraph()
         {
@@ -30,28 +33,49 @@ namespace sindraw
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var canvas = sender as Canvas;
-            Debug.WriteLine(canvas.Name);
-            var dot = new DraggablePoint(canvas, e.GetPosition(canvas));
+            mCanvas = sender as Canvas;
+            Debug.WriteLine(sender.ToString());
 
-            canvas.Children.Add(dot);
+            var dot = new DraggablePoint(mCanvas, mSumPointCollection, e.GetPosition(mCanvas));
+
+            mCanvas.Children.Add(dot);
             points.Add(dot);
 
-            Canvas.SetLeft(dot, e.GetPosition(canvas).X - 5.0);
-            Canvas.SetTop(dot, e.GetPosition(canvas).Y - 5.0);
+            Canvas.SetLeft(dot, e.GetPosition(mCanvas).X - 5.0);
+            Canvas.SetTop(dot, e.GetPosition(mCanvas).Y - 5.0);
+
+            redrawSum();
         }
 
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            redraw();
+            redrawAll();
         }
 
-        private void redraw()
+        private void redrawAll()
         {
-            foreach(var p in points)
+            foreach (var p in points)
             {
                 p.redrawSin();
             }
+
+            redrawSum();
+        }
+
+        private void redrawSum()
+        {
+            if (null == mCanvas)
+                return;
+
+            if (null != sumPolyLine)
+                mCanvas.Children.Remove(sumPolyLine);
+
+            sumPolyLine = new Polyline();
+            sumPolyLine.Stroke = Brushes.Yellow;
+
+            sumPolyLine.Points = mSumPointCollection;
+
+            mCanvas.Children.Add(sumPolyLine);
         }
     }
 }
