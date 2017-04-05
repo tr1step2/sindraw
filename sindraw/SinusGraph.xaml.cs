@@ -58,7 +58,7 @@ namespace sindraw
 
         public void redrawSum()
         {
-            if (null == ParentCanvas)
+            if (null == ParentCanvas || points.Count < 2)
                 return;
 
             ParentCanvas.Children.Remove(sumPolyLine);
