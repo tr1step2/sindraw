@@ -81,7 +81,7 @@ namespace sindraw
                 canvas.Children.Remove(linkedLine);
 
             double halfHeight = canvas.ActualHeight / 2;
-            double frameStep = canvas.ActualWidth / 280;
+            double frameStep = canvas.ActualWidth / Constants.Segments;
 
             double Xideal = Math.PI / 2 * 10 * frameStep;
             double Yideal = halfHeight - 100; 
@@ -91,7 +91,7 @@ namespace sindraw
 
             linkedLine = SinDrawer.draw(canvas, a, k);
             linkedLine.Stroke = Brushes.White;
-            linkedLine.StrokeThickness = 2;
+            linkedLine.StrokeThickness = Constants.LineStrokeThickness;
 
             canvas.Children.Add(linkedLine);
 

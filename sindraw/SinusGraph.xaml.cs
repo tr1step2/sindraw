@@ -14,7 +14,7 @@ namespace sindraw
     public partial class SinusGraph : UserControl
     {
         List<DraggablePoint> points = new List<DraggablePoint>();
-        PointCollection mSumPointCollection = new PointCollection(280);
+        PointCollection mSumPointCollection = new PointCollection(Constants.Segments);
         Polyline sumPolyLine = new Polyline();
 
         //public 
@@ -35,8 +35,8 @@ namespace sindraw
             ParentCanvas.Children.Add(dot);
             points.Add(dot);
 
-            Canvas.SetLeft(dot, e.GetPosition(ParentCanvas).X - 5.0);
-            Canvas.SetTop(dot, e.GetPosition(ParentCanvas).Y - 5.0);
+            Canvas.SetLeft(dot, e.GetPosition(ParentCanvas).X - Constants.PointInternalRadius);
+            Canvas.SetTop(dot, e.GetPosition(ParentCanvas).Y - Constants.PointInternalRadius);
 
             redrawSum();
         }
@@ -65,9 +65,9 @@ namespace sindraw
 
             sumPolyLine = new Polyline();
             sumPolyLine.Stroke = Brushes.Yellow;
-            sumPolyLine.StrokeThickness = 2;
+            sumPolyLine.StrokeThickness = Constants.LineStrokeThickness;
 
-            for (int i = 0; i < 280; ++i)
+            for (int i = 0; i < Constants.Segments; ++i)
             {
                 double avgX = 0;
                 double avgY = 0;

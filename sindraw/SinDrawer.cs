@@ -13,7 +13,7 @@ namespace sindraw
             Polyline pl = new Polyline();
 
             double halfHeight = canvas.ActualHeight / 2;
-            double frameStep = canvas.ActualWidth / 280;
+            double frameStep = canvas.ActualWidth / Constants.Segments;
 
             double Xideal = Math.PI / 2 * 10 * frameStep;
             double Yideal = halfHeight - 100;
@@ -21,7 +21,7 @@ namespace sindraw
             double frameX = 0;
             double frameY = halfHeight;
 
-            for (int i = 0; i < 280; ++i, frameX += frameStep)
+            for (int i = 0; i < Constants.Segments; ++i, frameX += frameStep)
             {
                 double x = (double)i / 10;
                 double y = a * Math.Sin(k * x);
