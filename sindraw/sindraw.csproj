@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants.cs" />
     <Compile Include="SinDrawer.cs" />
     <Compile Include="SinusGraph.xaml.cs">
       <DependentUpon>SinusGraph.xaml</DependentUpon>
