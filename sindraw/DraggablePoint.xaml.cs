@@ -91,14 +91,13 @@ namespace sindraw
             linkedLine = new Polyline();
             linkedLine.Stroke = Brushes.White;
 
-            //
             double halfHeight = canvas.ActualHeight / 2;
             double frameStep = canvas.ActualWidth / 80;
 
-            double Xideal = Math.Pi / 2 * 10 * frameStep;
-            double Yideal = halfHeight - 100; //can't resize graphics
+            double Xideal = Math.PI / 2 * 10 * frameStep;
+            double Yideal = halfHeight - 100; 
 
-            double a = Yideal / pt.Y;
+            double a = (halfHeight - pt.Y) / 100;
             double k = Xideal / pt.X;
 
             double frameX = 0;
