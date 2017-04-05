@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,7 +8,7 @@ namespace sindraw
 {
     class SinDrawer
     {
-        public static Polyline draw(Canvas canvas, PointCollection sumPoints, double a, double k)
+        public static Polyline draw(Canvas canvas, double a, double k)
         {
             Polyline pl = new Polyline();
 
@@ -34,19 +30,6 @@ namespace sindraw
 
                 Point p = new Point(frameX, frameY);
                 pl.Points.Add(p);
-
-                if (sumPoints.Count < 280)
-                {
-                    sumPoints.Add(p);
-                    continue;
-                }
-
-                //update sum graph points
-                Point psum = sumPoints[i];
-                psum.X = (psum.X + frameX) / 2;
-                psum.Y = (psum.Y + frameY) / 2;
-
-                sumPoints[i] = psum;
             }
 
             return pl;

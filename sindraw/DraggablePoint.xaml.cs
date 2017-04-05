@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace sindraw
@@ -24,17 +15,15 @@ namespace sindraw
         private Point currentPoint;
         private bool isInDrag = false;
 
-        private Canvas parentCanvas;
-        private PointCollection mSumPoints;
+        private SinusGraph mSinusGraph;
 
-        public DraggablePoint(Canvas parent, PointCollection sumPoints, Point pt)
+        public DraggablePoint(SinusGraph graph, Point pt)
         {
             InitializeComponent();
-           
-            parentCanvas = parent;
-            mSumPoints = sumPoints;
 
-            drawSin(parentCanvas, sumPoints, pt);
+            mSinusGraph = graph;
+
+            drawSin(mSinusGraph.ParentCanvas, pt);
         }
 
         private void MainCircle_MouseDown(object sender, MouseButtonEventArgs e)
@@ -69,7 +58,7 @@ namespace sindraw
                 this.RenderTransform = transform;
                 anchorPoint = currentPoint;
 
-                drawSin(parentCanvas, mSumPoints, new Point(currentPoint.X, currentPoint.Y));
+                drawSin(mSinusGraph.ParentCanvas, new Point(currentPoint.X, currentPoint.Y));
 
                 Panel.SetZIndex((UIElement)this, 2);
             }
@@ -81,10 +70,12 @@ namespace sindraw
 {
     public partial class DraggablePoint : UserControl
     {
-        Polyline linkedLine = null;
-        Point lastPoint;
+        private Polyline linkedLine = null;
+        private Point lastPoint;
 
-        private void drawSin(Canvas canvas, PointCollection sumPoints, Point pt)
+        public PointCollection Points;
+
+        private void drawSin(Canvas canvas, Point pt)
         {
             if (linkedLine != null)
                 canvas.Children.Remove(linkedLine);
@@ -98,17 +89,21 @@ namespace sindraw
             double a = (halfHeight - pt.Y) / 100;
             double k = Xideal / pt.X;
 
-            linkedLine = SinDrawer.draw(canvas, sumPoints, a, k);
+            linkedLine = SinDrawer.draw(canvas, a, k);
             linkedLine.Stroke = Brushes.White;
 
             canvas.Children.Add(linkedLine);
 
             lastPoint = pt;
+            Points = linkedLine.Points;
+
+            //call redraw sum
+            mSinusGraph.redrawSum();
         }
 
         public void redrawSin()
         {
-            drawSin(parentCanvas, mSumPoints, lastPoint);
+            drawSin(mSinusGraph.ParentCanvas, lastPoint);
         }
 
         public Point getPoint()

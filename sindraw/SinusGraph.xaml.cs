@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace sindraw
@@ -23,8 +15,10 @@ namespace sindraw
     {
         List<DraggablePoint> points = new List<DraggablePoint>();
         PointCollection mSumPointCollection = new PointCollection(280);
-        Polyline sumPolyLine;
-        Canvas mCanvas;
+        Polyline sumPolyLine = new Polyline();
+
+        //public 
+        public Canvas ParentCanvas;
 
         public SinusGraph()
         {
@@ -33,16 +27,16 @@ namespace sindraw
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            mCanvas = sender as Canvas;
+            ParentCanvas = sender as Canvas;
             Debug.WriteLine(sender.ToString());
 
-            var dot = new DraggablePoint(mCanvas, mSumPointCollection, e.GetPosition(mCanvas));
+            var dot = new DraggablePoint(this, e.GetPosition(ParentCanvas));
 
-            mCanvas.Children.Add(dot);
+            ParentCanvas.Children.Add(dot);
             points.Add(dot);
 
-            Canvas.SetLeft(dot, e.GetPosition(mCanvas).X - 5.0);
-            Canvas.SetTop(dot, e.GetPosition(mCanvas).Y - 5.0);
+            Canvas.SetLeft(dot, e.GetPosition(ParentCanvas).X - 5.0);
+            Canvas.SetTop(dot, e.GetPosition(ParentCanvas).Y - 5.0);
 
             redrawSum();
         }
@@ -62,20 +56,33 @@ namespace sindraw
             redrawSum();
         }
 
-        private void redrawSum()
+        public void redrawSum()
         {
-            if (null == mCanvas)
+            if (null == ParentCanvas)
                 return;
 
-            if (null != sumPolyLine)
-                mCanvas.Children.Remove(sumPolyLine);
+            ParentCanvas.Children.Remove(sumPolyLine);
 
             sumPolyLine = new Polyline();
             sumPolyLine.Stroke = Brushes.Yellow;
 
-            sumPolyLine.Points = mSumPointCollection;
+            for (int i = 0; i < 280; ++i)
+            {
+                double avgX = 0;
+                double avgY = 0;
+                foreach (var dragp in points)
+                {
+                    avgX += dragp.Points[i].X;
+                    avgY += dragp.Points[i].Y;
+                }
 
-            mCanvas.Children.Add(sumPolyLine);
+                avgX /= points.Count;
+                avgY /= points.Count;
+
+                sumPolyLine.Points.Add(new Point(avgX, avgY));
+            }
+
+            ParentCanvas.Children.Add(sumPolyLine);
         }
     }
 }
