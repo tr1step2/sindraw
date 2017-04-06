@@ -63,26 +63,7 @@ namespace sindraw
 
             ParentCanvas.Children.Remove(sumPolyLine);
 
-            sumPolyLine = new Polyline();
-            sumPolyLine.Stroke = Brushes.Yellow;
-            sumPolyLine.StrokeThickness = Constants.LineStrokeThickness;
-
-            for (int i = 0; i < Constants.Segments; ++i)
-            {
-                double avgX = 0;
-                double avgY = 0;
-                foreach (var dragp in points)
-                {
-                    avgX += dragp.Points[i].X;
-                    avgY += dragp.Points[i].Y;
-                }
-
-                avgX /= points.Count;
-                avgY /= points.Count;
-
-                sumPolyLine.Points.Add(new Point(avgX, avgY));
-            }
-
+            sumPolyLine = Drawer.getAvgCurve(points);
             ParentCanvas.Children.Add(sumPolyLine);
         }
     }

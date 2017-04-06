@@ -80,16 +80,7 @@ namespace sindraw
             if (linkedLine != null)
                 canvas.Children.Remove(linkedLine);
 
-            double halfHeight = canvas.ActualHeight / 2;
-            double frameStep = canvas.ActualWidth / Constants.Segments;
-
-            double Xideal = Math.PI / 2 * 10 * frameStep;
-            double Yideal = halfHeight - 100; 
-
-            double a = (halfHeight - pt.Y) / 100;
-            double k = Xideal / pt.X;
-
-            linkedLine = SinDrawer.draw(canvas, a, k);
+            linkedLine = Drawer.getSinusCurve(canvas, pt);
             linkedLine.Stroke = Brushes.White;
             linkedLine.StrokeThickness = Constants.LineStrokeThickness;
 
